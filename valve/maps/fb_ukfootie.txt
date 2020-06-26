@@ -1,0 +1,84 @@
+UK FOOTIE!
+
+By Mr.Bee | Ported to HL by rtxa
+
+- - - - - - - - - - - - - - - - - - - -  
+
+Goalies have invun and quad but cannot leave the goal area.
+
+To score enter the enemy goal with the ball. 
+
+Watch you dont score an own goal!
+
+Notes :-
+
+Goalies are faster
+No nail grenades
+Cannot get in stands
+
+- - - - - - - - - - - - - - - - - - - - 
+
+
+=====================================================================
+   Half-Life Map Spec Sheet
+=====================================================================
+------General Information--------------------------------------------
+
+Title		: ukfootie
+Filename	: ukfootie.BSP
+Author		: Stuart Bee [A&I]Mr.Bee
+Home page	: http://www.arc-hive.co.uk
+E-mail		: mr.bee@btinternet.com
+Description	: Football pitch with quad equiped goalies :)
+Previous Maps	: quadcapture, drugbaron , flagcontrol 1+2 and 3,  
+                  deliverance11+2, charge_r, TheHole, firefortress, 4fought
+
+------Credits and Thanks---------------------------------------------
+
+A&I for testing my maps
+
+------Play Information-----------------------------------------------
+
+TFC		: Of course!
+Deathmatch	: NO
+Single Player	: NO
+Map Description	: Football pitch with quad equiped goalies :)
+
+How Many Players: For best results minimum of 4+ (2+ vs 2+)
+
+------Map Information------------------------------------------------
+
+New Textures	: yes (banners)
+New Sounds	: yes (crowd cheers etc)
+
+------Construction---------------------------------------------------
+
+Base		: NONE
+Editor(s) used	: Worldcraft 3.3
+Compile Machine	: AMD TBird 850 w/768 MB RAM with Voodoo5 5500 and sblive!
+Compile time	: roughly 3 minutes
+
+------Map Instructions-----------------------------------------------
+
+Unzip the files in this archive.  Place the map, "ukfootie.bsp" in
+your half-life/TFC/maps directory. 
+place sounds in half-life/TFC/sound/football directory.
+
+------Additional Info------------------------------------------------
+
+This template is available at The radium Half-Life Map Center...
+http://www.planethalflife.com/radium
+
+------Copyright-Permissions------------------------------------------
+
+Authors MAY NOT use this level as a base to build additional levels. 
+
+You MUST NOT distribute this level UNLESS you INCLUDE THIS FILE WITH
+NO MODIFICATIONS!!!. If you don't co-operate, then DON'T DISTRIBUTE
+IT IN ANY FORM!!.
+
+This BSP may be distributed ONLY over the Internet and/or BBS systems.
+You are NOT authorized to put this BSP on any CD or distribute it in
+any way without my permission.
+
+

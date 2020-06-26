@@ -1,0 +1,39 @@
+[en]
+FB_TEAM_BLUE      = Blue
+FB_TEAM_RED       = Red
+FB_MATCHSTART     = Match starts in^n^n%d seconds
+FB_STARTS         = Starts in %d
+FB_MATCHSTARTED   = The MATCH has started!
+FB_HASBALL        = You HAVE the ball!
+FB_LOSTBALL       = You LOST the ball!
+FB_TEAMMENU       = Choose your team:
+FB_CLASSMENU      = Choose your class:
+FB_RANDOM         = Random
+FB_CLASS_SOLDIER  = Soldier
+FB_CLASS_MEDIC    = Medic
+FB_CLASS_SCOUT    = Scout
+FB_CLASS_CIVILIAN = Goalkeeper
+FB_OWNGOAL        = Own Goal! Idiot!...
+FB_GOALBLUE       = GOAL from team BLUE!
+FB_GOALRED        = GOAL from team RED!
+FB_MATCHRESTART   = Match restarted! 
+
+[es]
+FB_TEAM_BLUE      = Azul
+FB_TEAM_RED       = Rojo
+FB_MATCHSTART     = La partida comienza ^n^nen %d segundos
+FB_MATCHSTARTED   = La PARTIDA ha comenzado!
+FB_STARTS         = Empieza en %d
+FB_HASBALL        = TIENES la PELOTA en tu posesion!
+FB_LOSTBALL       = Has PERDIDO la pelota!
+FB_TEAMMENU       = Elige tu equipo:
+FB_CLASSMENU      = Elige tu clase:
+FB_RANDOM         = Aleatorio
+FB_CLASS_SOLDIER  = Soldado
+FB_CLASS_MEDIC    = Medico
+FB_CLASS_SCOUT    = Explorador
+FB_CLASS_CIVILIAN = Arquero
+FB_OWNGOAL        = IDIOTA! Gol en contra...
+FB_GOALBLUE       = GOL del equipo AZUL!
+FB_GOALRED        = GOL del equipo ROJO!
+FB_MATCHRESTART   = Partida reiniciada!
