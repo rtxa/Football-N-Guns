@@ -99,6 +99,9 @@ enum {
 	FB_CLASS_CIVILIAN // goalkeeper
 };
 
+// players lang
+new g_LangPlayers[MAX_PLAYERS + 1][16];
+
 // team names and score
 new g_TeamNames[HL_MAX_TEAMS][HL_MAX_TEAMNAME_LENGTH];
 new g_TeamScore[2];
@@ -284,6 +287,16 @@ public OnPlayerKilled_Post(victim, attacker, shouldGib) {
 }
 
 public client_infochanged(id) {
+	// Keep updated translated team names in scoreboard
+	new lang[16];
+	get_user_info(id, "lang", lang, charsmax(lang));
+
+	if (!equal(lang, g_LangPlayers[id])) {
+		get_user_info(id, "lang", g_LangPlayers[id], charsmax(g_LangPlayers[]));
+		UpdateTeamNames(id);
+	}
+
+	// Keep colormap everytime player changes his setinfo
 	new colorTeam[32];
 	switch (GetPlayerTeam(id)) {
 		case TEAM_BLUE: copy(colorTeam, charsmax(colorTeam), BLU_COLOR_STR);
@@ -291,7 +304,6 @@ public client_infochanged(id) {
 		case TEAM_NONE: return;
 	}
 
-	// Keep colormap everytime player changes his setinfo
 	engfunc(EngFunc_SetClientKeyValue, id, engfunc(EngFunc_GetInfoKeyBuffer, id), "topcolor", colorTeam);
 	engfunc(EngFunc_SetClientKeyValue, id, engfunc(EngFunc_GetInfoKeyBuffer, id), "bottomcolor", colorTeam);
 }
@@ -299,19 +311,9 @@ public client_infochanged(id) {
 public TaskPutInServer(taskid) {
 	new id = taskid - TASK_PUTINSERVER;
 
-	new blue[HL_TEAMNAME_LENGTH];
-	new red[HL_TEAMNAME_LENGTH];
+	get_user_info(id, "lang", g_LangPlayers[id], charsmax(g_LangPlayers[]));
 
-	// Get translated team name
-	SetGlobalTransTarget(id);
-	formatex(blue, charsmax(blue), "%l", "FB_TEAM_BLUE");
-	formatex(red, charsmax(red), "%l", "FB_TEAM_RED");
-
-	// Stylize it to uppercase
-	strtoupper(blue);
-	strtoupper(red);
-
-	hl_set_user_teamnames(id, blue, red);
+	UpdateTeamNames(id);
 
 	hl_set_user_teamscore(id, g_TeamNames[TEAM_BLUE - 1], g_TeamScore[TEAM_BLUE - 1]);
 	hl_set_user_teamscore(id, g_TeamNames[TEAM_RED - 1], g_TeamScore[TEAM_RED - 1]);
@@ -334,6 +336,8 @@ public client_disconnected(id) {
 	if (GetBallOwner() == id) {
 		DropBall();
 	}
+
+	g_LangPlayers[id][0] = '^0';
 }
 
 /* =============================== */
@@ -1232,4 +1236,20 @@ stock hl_user_kill(id) {
 	new deaths = hl_get_user_deaths(id);
 	user_kill(id, true);
 	hl_set_user_deaths(id, deaths);	
+}
+
+stock UpdateTeamNames(id = 0) {
+	new blue[HL_MAX_TEAMNAME_LENGTH];
+	new red[HL_MAX_TEAMNAME_LENGTH];
+
+	// Get translated team name
+	SetGlobalTransTarget(id);
+	formatex(blue, charsmax(blue), "%l", "FB_TEAM_BLUE");
+	formatex(red, charsmax(red), "%l", "FB_TEAM_RED");
+
+	// Stylize it to uppercase
+	strtoupper(blue);
+	strtoupper(red);
+
+	hl_set_user_teamnames(id, blue, red);
 }
