@@ -638,7 +638,7 @@ public OnTriggerMultipleTouch(touched, toucher) {
 
 				PlaySound(0, SND_GOAL);
 
-				client_print(0, print_center, "%l", GetOppositeTeam(teamGoalArea) == TEAM_BLUE ? "FB_GOALBLUE" : "FB_GOALRED");
+				client_print(0, print_center, "%l^n^n%l", GetOppositeTeam(teamGoalArea) == TEAM_BLUE ? "FB_GOALBLUE" : "FB_GOALRED", "FB_SCORER", toucher);
 				
 				// Fade user screen with color of winner
 				if (GetOppositeTeam(teamGoalArea) == TEAM_BLUE) {

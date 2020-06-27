@@ -17,6 +17,7 @@ FB_OWNGOAL        = Own Goal! Idiot!...
 FB_GOALBLUE       = GOAL from team BLUE!
 FB_GOALRED        = GOAL from team RED!
 FB_MATCHRESTART   = Match restarted! 
+FB_SCORER         = Scorer: %n
 
 [es]
 FB_TEAM_BLUE      = Azul
@@ -37,3 +38,4 @@ FB_OWNGOAL        = IDIOTA! Gol en contra...
 FB_GOALBLUE       = GOL del equipo AZUL!
 FB_GOALRED        = GOL del equipo ROJO!
 FB_MATCHRESTART   = Partida reiniciada!
+FB_SCORER         = Anotador: %n
