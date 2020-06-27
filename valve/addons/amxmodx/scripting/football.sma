@@ -22,10 +22,11 @@ new const SND_GOAL[] 	= "football/goal.wav";
 new const SND_BOO[] 	= "football/boo.wav";
 new const SND_CHEER[] 	= "football/cheer.wav";
 new const SND_CHANT[] 	= "football/chant.wav";
-new const SND_BELL[]	= "buttons/bell1.wav";
 new const SND_QDAMAGE[] = "football/qdamage.wav";
 new const SND_SPAWN[]	= "football/r_tele1.wav";
 new const SND_BUZZ[]	= "ambience/alienlaser1.wav";	
+new const SND_PICK_BALL[] = "football/pick_ball.wav";
+new const SND_DROP_BALL[] = "football/drop_ball.wav";
 
 // countdown sounds
 new const SND_COUNT[][] = {
@@ -67,8 +68,6 @@ new const TNAME_GOALAREA_RED[]     	= "fb_goalarea_red";
 #define GOAL_PLAYER_POINTS 		10
 #define CIVILIAN_KILL_POINTS 	5
 
-#define BALL_DELAY_TIME 3.0
-#define BALL_RETURN_TIME 30.0
 
 // ------------------------------------------------------------------
 
@@ -135,6 +134,8 @@ public plugin_precache() {
 	precache_sound(SND_CHEER);
 	precache_sound(SND_QDAMAGE);
 	precache_sound(SND_SPAWN);
+	precache_sound(SND_PICK_BALL);
+	precache_sound(SND_DROP_BALL);
 
 	g_SprBeam = precache_model(SPR_BEAM);
 }
@@ -544,13 +545,15 @@ public DropBall() {
 	SetBallNextTouch(ent, BALL_DELAY_TIME); // i think only same player has to wait, other player should pick up the ball inmediatly
 	set_pev(ent, pev_solid, SOLID_TRIGGER);
 
+	PlaySound(id, SND_DROP_BALL);
+
 	CustomHudMsg(id, "FB_LOSTBALL");
 }
 
 public EquipBall(id) {
 	AttachBallToPlayer(id);
 	CustomHudMsg(id, "FB_HASBALL");
-	PlaySound(id, SND_BELL);
+	PlaySound(id, SND_PICK_BALL);
 }
 
 public AttachBallToPlayer(id) {
