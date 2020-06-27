@@ -936,7 +936,7 @@ public SetSoldier(id) {
 	give_item(id, "weapon_shotgun");
 	give_item(id, "weapon_rpg");
 
-	hl_set_user_bpammo(id, HLW_RPG, 5);
+	hl_set_user_bpammo(id, HLW_RPG, 10);
 	hl_set_user_bpammo(id, HLW_GLOCK, 96);
 	hl_set_user_bpammo(id, HLW_SHOTGUN, 64);
 }
@@ -973,8 +973,8 @@ public SetScout(id) {
 
 	give_item(id, "weapon_crowbar");
 	give_item(id, "weapon_glock");
-	give_item(id, "weapon_hornetgun");
 	give_item(id, "weapon_357");
+	give_item(id, "weapon_handgrenade");
 
 	hl_set_user_bpammo(id, HLW_PYTHON, 24);
 	hl_set_user_bpammo(id, HLW_GLOCK, 96);
