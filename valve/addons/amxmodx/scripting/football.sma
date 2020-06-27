@@ -314,9 +314,7 @@ public TaskPutInServer(taskid) {
 	get_user_info(id, "lang", g_LangPlayers[id], charsmax(g_LangPlayers[]));
 
 	UpdateTeamNames(id);
-
-	hl_set_user_teamscore(id, g_TeamNames[TEAM_BLUE - 1], g_TeamScore[TEAM_BLUE - 1]);
-	hl_set_user_teamscore(id, g_TeamNames[TEAM_RED - 1], g_TeamScore[TEAM_RED - 1]);
+	UpdateTeamScore(id);
 
 	// bots don't know how to select team
 	if (is_user_bot(id)) {
@@ -432,8 +430,7 @@ public CmdRestartGame(id, level, cid) {
 		g_TeamScore[i] = 0;
 	}
 
-	hl_set_user_teamscore(0, g_TeamNames[TEAM_BLUE - 1], g_TeamScore[TEAM_BLUE - 1]);
-	hl_set_user_teamscore(0, g_TeamNames[TEAM_RED - 1], g_TeamScore[TEAM_RED - 1]);
+	UpdateTeamScore();
 
 	RoundRestart();
 	client_print(0, print_center, "%l", "FB_MATCHRESTART");
@@ -637,9 +634,8 @@ public OnTriggerMultipleTouch(touched, toucher) {
 				AddPointsToScore(GetOppositeTeam(teamGoalArea), GOAL_TEAM_POINTS);
 
 				// update team score in all players
-				hl_set_user_teamscore(0, g_TeamNames[TEAM_BLUE - 1], g_TeamScore[TEAM_BLUE - 1]);
-				hl_set_user_teamscore(0, g_TeamNames[TEAM_RED - 1], g_TeamScore[TEAM_RED - 1]);
-				
+				UpdateTeamScore();
+
 				PlaySound(0, SND_GOAL);
 
 				client_print(0, print_center, "%l", GetOppositeTeam(teamGoalArea) == TEAM_BLUE ? "FB_GOALBLUE" : "FB_GOALRED");
@@ -1267,4 +1263,9 @@ stock UpdateTeamNames(id = 0) {
 	strtoupper(red);
 
 	hl_set_user_teamnames(id, blue, red);
+}
+
+stock UpdateTeamScore(id = 0) {
+	hl_set_user_teamscore(id, g_TeamNames[TEAM_BLUE - 1], g_TeamScore[TEAM_BLUE - 1]);
+	hl_set_user_teamscore(id, g_TeamNames[TEAM_RED - 1], g_TeamScore[TEAM_RED - 1]);
 }
