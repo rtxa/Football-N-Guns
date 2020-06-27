@@ -1213,11 +1213,11 @@ stock DrawFlagIcon(id, bool:status, team) {
 	new r, g, b, sprite[32];
 	
 	if (team == TEAM_RED) {
-		r = 230;
-		copy(sprite, charsmax(sprite), "dmg_rad");
+		r = 255; g = 60; b = 60; 
+		copy(sprite, charsmax(sprite), "dmg_gas");
 	} else if (team == TEAM_BLUE) {
-		b = 230;
-		copy(sprite, charsmax(sprite), "dmg_shock");
+		r = 60; g = 100; b = 255; 
+		copy(sprite, charsmax(sprite), "dmg_gas");
 	}
 	message_begin(MSG_ONE, StatusIcon, .player = id);
 	write_byte(status);
