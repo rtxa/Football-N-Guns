@@ -68,6 +68,7 @@ new const TNAME_GOALAREA_RED[]     	= "fb_goalarea_red";
 #define GOAL_PLAYER_POINTS 		10
 #define CIVILIAN_KILL_POINTS 	5
 
+#define BALL_DELAY_TIME 1.5
 
 // ------------------------------------------------------------------
 
