@@ -318,6 +318,21 @@ public TaskPutInServer(taskid) {
 	hl_set_user_teamscore(id, g_TeamNames[TEAM_BLUE - 1], g_TeamScore[TEAM_BLUE - 1]);
 	hl_set_user_teamscore(id, g_TeamNames[TEAM_RED - 1], g_TeamScore[TEAM_RED - 1]);
 
+	// bots don't know how to select team
+	if (is_user_bot(id)) {
+		new team = id % 2 ? TEAM_BLUE : TEAM_RED;
+		new class = random_num(FB_CLASS_SCOUT, FB_CLASS_CIVILIAN);
+
+		if (class == FB_CLASS_CIVILIAN && GetPlayersNumByClass(team, class))
+			class = random_num(FB_CLASS_SCOUT, FB_CLASS_MEDIC);
+
+		ChangePlayerTeam(id, team);
+		SetPlayerTeam(id, team);
+		SetPlayerClass(id, class);
+
+		return;
+	}
+
 	hl_set_user_spectator(id, true);
 
 	DisplayTeamMenu(id);
