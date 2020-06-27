@@ -369,14 +369,14 @@ public RoundPreStart() {
 }
 
 public CallRoundCountDown() {
-	g_RoundCountDown = 18;
+	g_RoundCountDown = 15;
 	RoundCountDown();
 }
 
 public RoundCountDown() {
 	// little hack to show message much longer
-	if (g_RoundCountDown == 15 || g_RoundCountDown == 14) {
-		client_print(0, print_center, "%l", "FB_MATCHSTART", 15);
+	if (g_RoundCountDown == 10) {
+		client_print(0, print_center, "%l", "FB_MATCHSTART", 10);
 	}
 
 	if (g_RoundCountDown == 0) {
