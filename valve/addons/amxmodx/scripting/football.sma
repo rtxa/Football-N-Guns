@@ -331,6 +331,9 @@ public TaskPutInServer(taskid) {
 		return;
 	}
 
+	// increase display time of center messages
+	client_cmd(id, "scr_centertime 3");
+
 	hl_set_user_spectator(id, true);
 
 	DisplayTeamMenu(id);
