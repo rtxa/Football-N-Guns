@@ -190,7 +190,6 @@ public plugin_init() {
 	RegisterHam(Ham_Touch, "weaponbox", "OnWeaponBoxTouch_Pre");
 
 	// Quad damage sound for civilian
-	RegisterHam(Ham_Weapon_PrimaryAttack, "weapon_crowbar", "OnCrowbarPrimaryAttack_Pre");
 	RegisterHam(Ham_Weapon_PrimaryAttack, "weapon_crowbar", "OnCrowbarPrimaryAttack_Post", true);
 
 	register_clcmd("spectate", "CmdSpectate");
@@ -205,26 +204,20 @@ public OnGetGameDescription() {
 	return FMRES_SUPERCEDE;
 }
 
-public OnCrowbarPrimaryAttack_Pre(this, anim) {
-	new id = pev(this, pev_owner);
-
-	if (GetPlayerClass(id) == FB_CLASS_CIVILIAN) {
-		// reset animation before sent
-		set_pev(id, pev_weaponanim, 1);
-	}
-}
-
-public OnCrowbarPrimaryAttack_Post(this, anim) {
+public OnCrowbarPrimaryAttack_Post(this) {
 	new id = pev(this, pev_owner);
 	
 	if (GetPlayerClass(id) == FB_CLASS_CIVILIAN) {
-		switch (pev(id, pev_weaponanim)) {
-			case 6, 8: {}
-			default: emit_sound(id, CHAN_ITEM, SND_QDAMAGE, VOL_NORM, ATTN_NORM, 0, 95 + random_num(0, 31));
+		if (pev(id, pev_weaponanim) == 6 || pev(id, pev_weaponanim) == 8) {
+			// because crowbar idle animations are predicted we need to reset this
+			set_pev(id, pev_weaponanim, 1);
+			return;
 		}
+
+		// we only play the sound when he isn't hitting anything
+		emit_sound(id, CHAN_ITEM, SND_QDAMAGE, VOL_NORM, ATTN_NORM, 0, 95 + random_num(0, 31));
 	}
 }
-
 
 public OnWeaponBoxTouch_Pre(this) {
 	// Remove weapons and leavy only ammo
