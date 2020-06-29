@@ -634,19 +634,21 @@ public OnTriggerMultipleTouch(touched, toucher) {
 	if (teamGoalArea > 0) {
 		if (equal(classname, "player")) {
 			if (GetBallOwner() == toucher) {
-				AddPointsToScore(GetOppositeTeam(teamGoalArea), GOAL_TEAM_POINTS);
+				new goalFromTeam = GetOppositeTeam(teamGoalArea);
+
+				AddPointsToScore(goalFromTeam, GOAL_TEAM_POINTS);
 
 				// update team score in all players
 				UpdateTeamScore();
 
 				PlaySound(0, SND_GOAL);
 
-				client_print(0, print_center, "%l^n^n%l", GetOppositeTeam(teamGoalArea) == TEAM_BLUE ? "FB_GOALBLUE" : "FB_GOALRED", "FB_SCORER", toucher);
+				client_print(0, print_center, "%l^n^n%l", goalFromTeam == TEAM_BLUE ? "FB_GOALBLUE" : "FB_GOALRED", "FB_SCORER", toucher);
 				
 				// Fade user screen with color of winner
-				if (GetOppositeTeam(teamGoalArea) == TEAM_BLUE) {
+				if (goalFromTeam == TEAM_BLUE) {
 					fade_user_screen(0, 1.0, 1.0, ScreenFade_FadeIn, 0, 0, 255, 75);
-				} else if (GetOppositeTeam(teamGoalArea) == TEAM_RED) {
+				} else if (goalFromTeam == TEAM_RED) {
 					fade_user_screen(0, 1.0, 1.0, ScreenFade_FadeIn, 255, 0, 0, 75);
 				}
 
@@ -743,7 +745,7 @@ public TaskDisplayScore(taskid) {
 // maybe change colors for 5 seconds when a goal is made
 public DisplayScore() {
 	set_hudmessage(205, 80, 255, -1.0, -0.02, 1, 0.01, 600.0, 0.01, 0.01);
-	ShowSyncHudMsg(0, g_TeamScoreHudSync, "Football N' Guns^n[%l:%02d] - [%l:%02d]", "FB_TEAM_BLUE", GetScorePoints(TEAM_BLUE), "FB_TEAM_RED", GetScorePoints(TEAM_RED));
+	ShowSyncHudMsg(0, g_TeamScoreHudSync, "Football N' Guns^n[%l:%02d] - [%l:%02d]", "FB_TEAM_BLUE", GetTeamScore(TEAM_BLUE), "FB_TEAM_RED", GetTeamScore(TEAM_RED));
 }
 
 /* Team and Class Menu
@@ -903,7 +905,7 @@ public AddPointsToScore(team, value) {
 	g_TeamScore[team - 1] += value;
 }
 
-public GetScorePoints(team) {
+public GetTeamScore(team) {
 	return g_TeamScore[team - 1];
 }
 
@@ -1269,6 +1271,6 @@ stock UpdateTeamNames(id = 0) {
 }
 
 stock UpdateTeamScore(id = 0) {
-	hl_set_user_teamscore(id, g_TeamNames[TEAM_BLUE - 1], g_TeamScore[TEAM_BLUE - 1]);
-	hl_set_user_teamscore(id, g_TeamNames[TEAM_RED - 1], g_TeamScore[TEAM_RED - 1]);
+	hl_set_user_teamscore(id, g_TeamNames[TEAM_BLUE - 1], GetTeamScore(TEAM_BLUE));
+	hl_set_user_teamscore(id, g_TeamNames[TEAM_RED - 1], GetTeamScore(TEAM_RED));
 }
