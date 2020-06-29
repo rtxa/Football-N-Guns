@@ -469,8 +469,17 @@ public RoundMatchWinner() {
 }
 
 RoundWinnerMsg() {
-	set_hudmessage(255, 255, 255, -1.0, 0.45, 2, 0.03, 10.0, 0.03, 0.5);
-	ShowSyncHudMsg(0, g_HudCtfMsgSync, "%l", GetTeamScore(TEAM_BLUE) > GetTeamScore(TEAM_RED) ? "FB_WINNER_BLUE" : "FB_WINNER_RED");
+	new winner = GetTeamScore(TEAM_BLUE) > GetTeamScore(TEAM_RED);
+
+	set_hudmessage(230, 230, 230, -1.0, 0.45, 2, 0.03, 10.0, 0.03, 0.5);
+	
+	if (winner == TEAM_BLUE) {
+		fade_user_screen(0, 15.0, 1.0, .a = 100);
+	} else {
+		fade_user_screen(0, 15.0, 1.0, .r = 255, .g = 0, .b = 0, .a = 100);
+	}
+
+	ShowSyncHudMsg(0, g_HudCtfMsgSync, "%l", winner ? "FB_WINNER_BLUE" : "FB_WINNER_RED");
 }
 
 public RestartGame() {
