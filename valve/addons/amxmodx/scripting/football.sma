@@ -27,6 +27,7 @@ new const SND_SPAWN[]	= "football/r_tele1.wav";
 new const SND_BUZZ[]	= "ambience/alienlaser1.wav";	
 new const SND_PICK_BALL[] = "football/pick_ball.wav";
 new const SND_DROP_BALL[] = "football/drop_ball.wav";
+new const SND_APPLAUSES[] = "ambience/goal_1.wav";
 
 // countdown sounds
 new const SND_COUNT[][] = {
@@ -450,6 +451,8 @@ public RoundMatchWinner() {
 
 	// guess team winner by team score
 	client_print(0, print_center, "%l", GetTeamScore(TEAM_BLUE) > GetTeamScore(TEAM_RED) ? "FB_WINNER_BLUE" : "FB_WINNER_RED");
+
+	PlaySound(0, SND_APPLAUSES);
 
 	set_task(15.0, "RestartGame", TASK_ROUNDRESTART);
 }
