@@ -163,7 +163,7 @@ public plugin_init() {
 	g_HudCtfMsgSync = CreateHudSyncObj();
 	g_TeamScoreHudSync = CreateHudSyncObj();
 
-	set_task_ex(1.0, "TaskDisplayScore", TASK_DISPLAYSCORE, _, _, SetTask_Repeat);
+	set_task_ex(1.0, "TaskDisplayScore", TASK_DISPLAYSCORE, .flags = SetTask_Repeat);
 
 	register_clcmd("say !team", "CmdTeamMenu");
 	register_clcmd("say !class", "CmdClassMenu");
@@ -175,9 +175,8 @@ public plugin_init() {
 	register_touch("trigger_teleport", "player", "OnTriggerTeleportTouch");
 	register_touch("trigger_push", "player", "OnTriggerPushTouch");
 
-	// goalarea
+	// goal area
 	register_touch("trigger_multiple", "player", "OnTriggerMultipleTouch");
-	register_touch("trigger_multiple", "ball", "OnTriggerMultipleTouch");
 
 	// ball
 	register_touch("ball", "player", "OnBallTouch");
@@ -661,17 +660,12 @@ public Float:GetBallNextTouch(ent) {
 /* ======================
 */
 
-
-
-/* Goalarea
+/* Goal area
 */
 
 public OnTriggerMultipleTouch(touched, toucher) {
 	new targetname[32]; // name of this trigger_multiple
 	pev(touched, pev_targetname, targetname, charsmax(targetname));
-
-	new classname[32]; // classname of toucher (probably a player)
-	pev(toucher, pev_classname, classname, charsmax(classname));
 	
 	new teamGoalArea;
 	if (strcmp(targetname, TNAME_GOALAREA_BLUE) == 0) {
@@ -682,41 +676,39 @@ public OnTriggerMultipleTouch(touched, toucher) {
 
 	// if goal area is touched
 	if (teamGoalArea > 0) {
-		if (equal(classname, "player")) {
-			if (GetBallOwner() == toucher) {
-				new goalFromTeam = GetOppositeTeam(teamGoalArea);
+		if (GetBallOwner() == toucher) {
+			new goalFromTeam = GetOppositeTeam(teamGoalArea);
 
-				AddPointsToScore(goalFromTeam, GOAL_TEAM_POINTS);
+			AddPointsToScore(goalFromTeam, GOAL_TEAM_POINTS);
 
-				// update team score in all players
-				UpdateTeamScore();
+			// update team score in all players
+			UpdateTeamScore();
 
-				PlaySound(0, SND_GOAL);
+			PlaySound(0, SND_GOAL);
 
-				client_print(0, print_center, "%l^n^n%l", goalFromTeam == TEAM_BLUE ? "FB_GOALBLUE" : "FB_GOALRED", "FB_SCORER", toucher);
-				
-				// Fade user screen with color of winner
-				if (goalFromTeam == TEAM_BLUE) {
-					fade_user_screen(0, 1.0, 1.0, ScreenFade_FadeIn, 0, 0, 255, 75);
-				} else if (goalFromTeam == TEAM_RED) {
-					fade_user_screen(0, 1.0, 1.0, ScreenFade_FadeIn, 255, 0, 0, 75);
-				}
-
-				// own goal
-				if (GetPlayerTeam(toucher) == teamGoalArea) {
-					PlaySound(0, SND_BOO);
-					hl_set_user_frags(toucher, hl_get_user_frags(toucher) - GOAL_PLAYER_POINTS);
-					client_print(toucher, print_center, "%l", "FB_OWNGOAL");
-				} else { // good goal
-					PlaySound(0, SND_CHEER);
-					hl_set_user_frags(toucher, hl_get_user_frags(toucher) + GOAL_PLAYER_POINTS);
-				}
-
-				if (get_pcvar_num(g_pCvarGoalLimit) == GetTeamScore(goalFromTeam))
-					RoundMatchWinner();
-				else 
-					RoundRestart();
+			client_print(0, print_center, "%l^n^n%l", goalFromTeam == TEAM_BLUE ? "FB_GOALBLUE" : "FB_GOALRED", "FB_SCORER", toucher);
+			
+			// Fade user screen with color of winner
+			if (goalFromTeam == TEAM_BLUE) {
+				fade_user_screen(0, 1.0, 1.0, ScreenFade_FadeIn, 0, 0, 255, 75);
+			} else if (goalFromTeam == TEAM_RED) {
+				fade_user_screen(0, 1.0, 1.0, ScreenFade_FadeIn, 255, 0, 0, 75);
 			}
+
+			// own goal
+			if (GetPlayerTeam(toucher) == teamGoalArea) {
+				PlaySound(0, SND_BOO);
+				hl_set_user_frags(toucher, hl_get_user_frags(toucher) - GOAL_PLAYER_POINTS);
+				client_print(toucher, print_center, "%l", "FB_OWNGOAL");
+			} else { // good goal
+				PlaySound(0, SND_CHEER);
+				hl_set_user_frags(toucher, hl_get_user_frags(toucher) + GOAL_PLAYER_POINTS);
+			}
+
+			if (get_pcvar_num(g_pCvarGoalLimit) == GetTeamScore(goalFromTeam))
+				RoundMatchWinner();
+			else 
+				RoundRestart();
 		}
 	}
 
@@ -1077,7 +1069,7 @@ public SetCivilian(id) {
 /* ===================
 */
 
-/*General Stocks
+/* General Stocks
 */
 
 stock RemoveExtension(const input[], output[], length, const ext[]) {
