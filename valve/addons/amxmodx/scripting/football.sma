@@ -16,6 +16,10 @@
 
 #define IsPlayer(%0) (%0 > 0 && %0 <= MaxClients)
 
+// Too lazy to create his own include
+native fireworks_add_shooter(Float:origin[3]);
+native fireworks_start_shooters();
+
 // --------------------------------- Sounds ---------------------------------
 
 new const SND_GOAL[] 	= "football/goal.wav";
@@ -362,6 +366,20 @@ public InitFootball() {
 	g_EntGoalKeeperBlue = find_ent_by_tname(0, TNAME_GOALKEEPER_BLUE);
 	g_EntGoalKeeperRed = find_ent_by_tname(0, TNAME_GOALKEEPER_RED);
 	g_EntBall = SpawnBall();
+
+	SetupFireworks();
+}
+
+SetupFireworks() {
+	new Float:origin[3];
+	// Place 2 fireworks shooters in both sides
+	pev(g_EntBallPlaceHolder, pev_origin, origin);
+	origin[0] += 512;
+	fireworks_add_shooter(origin);
+
+	pev(g_EntBallPlaceHolder, pev_origin, origin);
+	origin[0] -= 512;
+	fireworks_add_shooter(origin);
 }
 
 public RoundPreStart() {
@@ -444,6 +462,8 @@ public RoundMatchWinner() {
 	RoundWinnerMsg();
 
 	PlaySound(0, SND_APPLAUSES);
+
+	fireworks_start_shooters();
 
 	set_task(15.0, "RestartGame", TASK_ROUNDRESTART);
 }
