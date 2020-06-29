@@ -253,7 +253,7 @@ public OnPlayerSpawn_Post(id) {
 	}
 
 	SetClassAtribbutes(id);
-	DrawFlagIcon(id, true, GetPlayerTeam(id));
+	DrawTeamIcon(id, true, GetPlayerTeam(id));
 	SpeakSnd(id, SND_SPAWN);
 }
 
@@ -588,6 +588,7 @@ public DropBall() {
 	new id = GetBallOwner();
 
 	UnattachBallFromPlayer();
+	DrawBallIcon(id, false);
 	set_pev(g_EntBall, pev_movetype, MOVETYPE_TOSS);
 
 	SetBallLastOwner(id);
@@ -616,6 +617,7 @@ public DropBall() {
 
 public EquipBall(id) {
 	AttachBallToPlayer(id);
+	DrawBallIcon(id, true);
 	CustomHudMsg(id, "FB_HASBALL");
 	PlaySound(id, SND_PICK_BALL);
 }
@@ -1271,29 +1273,44 @@ stock kill_trail_msg(id) {
 	message_end();
 }
 
-stock DrawFlagIcon(id, bool:status, team) {
+stock DrawTeamIcon(id, bool:status, team) {
 	static StatusIcon;
 
 	if (!StatusIcon)
 		StatusIcon = get_user_msgid("StatusIcon");
 
-	new r, g, b, sprite[32];
+	new r, g, b;
 	
 	if (team == TEAM_RED) {
 		r = 255; g = 60; b = 60; 
-		copy(sprite, charsmax(sprite), "dmg_gas");
 	} else if (team == TEAM_BLUE) {
 		r = 60; g = 100; b = 255; 
-		copy(sprite, charsmax(sprite), "dmg_gas");
 	}
+	
 	message_begin(MSG_ONE, StatusIcon, .player = id);
 	write_byte(status);
-	write_string(sprite);
+	write_string("dmg_gas");
 	write_byte(r);
 	write_byte(g);
 	write_byte(b);
 	message_end();
 }
+
+stock DrawBallIcon(id, bool:status) {
+	static StatusIcon;
+
+	if (!StatusIcon)
+		StatusIcon = get_user_msgid("StatusIcon");
+
+	message_begin(MSG_ONE, StatusIcon, .player = id);
+	write_byte(status);
+	write_string("dmg_rad");
+	write_byte(200);
+	write_byte(200);
+	write_byte(0);
+	message_end();
+}
+
 
 stock hl_user_kill(id) {
 	new deaths = hl_get_user_deaths(id);
