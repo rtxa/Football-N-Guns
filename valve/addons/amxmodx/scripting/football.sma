@@ -577,8 +577,8 @@ public ReturnBallToBase() {
 	new Float:origin[3];
 	pev(g_EntBallPlaceHolder, pev_origin, origin);
 
-	entity_set_origin(g_EntBall, origin);
 	UnattachBallFromPlayer();
+	entity_set_origin(g_EntBall, origin);
 	set_pev(g_EntBall, pev_movetype, MOVETYPE_FLY);
 
 	set_pev(g_EntBall, pev_solid, SOLID_TRIGGER);
