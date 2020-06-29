@@ -420,6 +420,8 @@ public RoundRestart() {
 
 	ReturnBallToBase();
 
+	ResetMap();
+
 	RoundPreStart();
 }
 
@@ -437,6 +439,8 @@ public RoundMatchWinner() {
 		}
 	}
 	
+	ResetMap();
+
 	UpdateTeamScore();
 
 	ReturnBallToBase();
@@ -1337,4 +1341,52 @@ stock UpdateTeamNames(id = 0) {
 stock UpdateTeamScore(id = 0) {
 	hl_set_user_teamscore(id, g_TeamNames[TEAM_BLUE - 1], GetTeamScore(TEAM_BLUE));
 	hl_set_user_teamscore(id, g_TeamNames[TEAM_RED - 1], GetTeamScore(TEAM_RED));
+}
+
+
+stock ResetMap() {
+	ClearField();
+	ClearCorpses();
+}
+
+stock ClearField() {
+	static const fieldEnts[][] = { "bolt", "monster_snark", "monster_satchel", "monster_tripmine", "beam" };
+
+	for (new i; i < sizeof fieldEnts; i++)
+		remove_entity_name(fieldEnts[i]);
+
+	new ent;
+	while ((ent = find_ent_by_class(ent, "rpg_rocket")))
+		set_pev(ent, pev_dmg, 0);
+
+	ent = 0;
+	while ((ent = find_ent_by_class(ent, "grenade")))
+		set_pev(ent, pev_dmg, 0);
+	
+	ent = 0;
+	while ((ent = find_ent_by_class(ent, "weaponbox"))) {
+		WeaponBox_Kill(ent);
+	}
+}
+
+stock ClearCorpses() {
+	new ent;
+	while ((ent = find_ent_by_class(ent, "bodyque")))
+		set_pev(ent, pev_effects, EF_NODRAW);
+}
+
+stock WeaponBox_Kill(const pWeaponBox) {
+	new pWeapon;
+	
+	// destroy the weapons inside the box
+	for (new i = 0 ; i < HL_MAX_WEAPON_SLOTS; i++) {
+		pWeapon = get_ent_data_entity(pWeaponBox, "CWeaponBox", "m_rgpPlayerItems", i);
+		while (pWeapon != FM_NULLENT) {
+			set_pev(pWeapon, pev_flags, FL_KILLME);
+			pWeapon = get_ent_data_entity(pWeaponBox, "CBasePlayerItem", "m_pNext");
+		}
+	}
+	
+	// remove the box
+	set_pev(pWeaponBox, pev_flags, FL_KILLME);
 }
