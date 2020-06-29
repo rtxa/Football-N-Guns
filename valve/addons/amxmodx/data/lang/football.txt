@@ -18,6 +18,8 @@ FB_GOALBLUE       = GOAL from team BLUE!
 FB_GOALRED        = GOAL from team RED!
 FB_MATCHRESTART   = Match restarted! 
 FB_SCORER         = Made by: %n
+FB_WINNER_BLUE    = Winner of the match:^n^nBLUE TEAM
+FB_WINNER_RED     = Winner of the match:^n^nRED TEAM
 
 [es]
 FB_TEAM_BLUE      = Azul
@@ -39,3 +41,5 @@ FB_GOALBLUE       = GOL del equipo AZUL!
 FB_GOALRED        = GOL del equipo ROJO!
 FB_MATCHRESTART   = Partida reiniciada!
 FB_SCORER         = Hecho por: %n
+FB_WINNER_BLUE    = Ganador del partido:^n^nEQUIPO AZUL
+FB_WINNER_RED     = Ganador del partido:^n^nEQUIPO RED

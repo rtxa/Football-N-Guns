@@ -80,6 +80,7 @@ new const TNAME_GOALAREA_RED[]     	= "fb_goalarea_red";
 
 enum (+= 100) {
 	TASK_ROUNDCOUNTDOWN = 1959,
+	TASK_ROUNDRESTART,
 	TASK_PUTINSERVER,
 	TASK_DISPLAYSCORE,
 	TASK_PLAYERTRAIL
@@ -123,6 +124,8 @@ new g_HudCtfMsgSync;
 // sprite beam (used in player trail when he has the ball)
 new g_SprBeam;
 
+new g_pCvarGoalLimit;
+
 public plugin_precache() {
 	precache_model(MDL_CIVILIAN);
 	precache_model(MDL_SOLDIER);
@@ -142,6 +145,8 @@ public plugin_precache() {
 	precache_sound(SND_DROP_BALL);
 
 	g_SprBeam = precache_model(SPR_BEAM);
+
+	g_pCvarGoalLimit = create_cvar("fb_goallimit", "10", FCVAR_SERVER);
 }
 
 public plugin_init() {
@@ -414,14 +419,38 @@ public RoundRestart() {
 	}
 
 	ReturnBallToBase();
-	remove_task(TASK_ROUNDCOUNTDOWN);
+
 	RoundPreStart();
 }
 
-public CmdRestartGame(id, level, cid) {
-	if (!cmd_access(id, level, cid, 1))
-		return PLUGIN_HANDLED;
+public RoundMatchWinner() {
+	new players[MAX_PLAYERS], numPlayers;
+	get_players_ex(players, numPlayers, GetPlayers_ExcludeHLTV);
 
+	// respawn all players and don't allow to hurt anyone 
+	new plr;
+	for (new i; i < numPlayers; i++) {
+		plr = players[i];
+		if (GetPlayerTeam(plr) != TEAM_NONE && GetPlayerClass(plr) != FB_CLASS_NONE) {
+			hl_user_spawn(plr);
+			set_user_godmode(plr, true);
+		}
+	}
+	
+	UpdateTeamScore();
+
+	ReturnBallToBase();
+
+	set_pev(g_EntBall, pev_solid, SOLID_NOT);
+	SetDividingWall(false);
+
+	// guess team winner by team score
+	client_print(0, print_center, "%l", GetTeamScore(TEAM_BLUE) > GetTeamScore(TEAM_RED) ? "FB_WINNER_BLUE" : "FB_WINNER_RED");
+
+	set_task(15.0, "RestartGame", TASK_ROUNDRESTART);
+}
+
+public RestartGame() {
 	// reset players score
 	for (new i = 1; i <= MaxClients; i++) {
 		if (is_user_connected(i))
@@ -436,6 +465,17 @@ public CmdRestartGame(id, level, cid) {
 	UpdateTeamScore();
 
 	RoundRestart();
+}
+
+public CmdRestartGame(id, level, cid) {
+	if (!cmd_access(id, level, cid, 1))
+		return PLUGIN_HANDLED;
+
+	remove_task(TASK_ROUNDCOUNTDOWN);
+	remove_task(TASK_ROUNDRESTART);
+
+	RestartGame();
+
 	client_print(0, print_center, "%l", "FB_MATCHRESTART");
 
 	return PLUGIN_HANDLED;
@@ -445,7 +485,11 @@ public CmdRestartRound(id, level, cid) {
 	if (!cmd_access(id, level, cid, 1))
 		return PLUGIN_HANDLED;
 
+	remove_task(TASK_ROUNDCOUNTDOWN);
+	remove_task(TASK_ROUNDRESTART);
+
 	RoundRestart();
+
 	client_print(0, print_center, "%l", "FB_MATCHRESTART");
 
 	return PLUGIN_HANDLED;
@@ -661,8 +705,11 @@ public OnTriggerMultipleTouch(touched, toucher) {
 					PlaySound(0, SND_CHEER);
 					hl_set_user_frags(toucher, hl_get_user_frags(toucher) + GOAL_PLAYER_POINTS);
 				}
-				
-				RoundRestart();
+
+				if (get_pcvar_num(g_pCvarGoalLimit) == GetTeamScore(goalFromTeam))
+					RoundMatchWinner();
+				else 
+					RoundRestart();
 			}
 		}
 	}
