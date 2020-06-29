@@ -449,12 +449,16 @@ public RoundMatchWinner() {
 	set_pev(g_EntBall, pev_solid, SOLID_NOT);
 	SetDividingWall(false);
 
-	// guess team winner by team score
-	client_print(0, print_center, "%l", GetTeamScore(TEAM_BLUE) > GetTeamScore(TEAM_RED) ? "FB_WINNER_BLUE" : "FB_WINNER_RED");
+	RoundWinnerMsg();
 
 	PlaySound(0, SND_APPLAUSES);
 
 	set_task(15.0, "RestartGame", TASK_ROUNDRESTART);
+}
+
+RoundWinnerMsg() {
+	set_hudmessage(255, 255, 255, -1.0, 0.45, 2, 0.03, 10.0, 0.03, 0.5);
+	ShowSyncHudMsg(0, g_HudCtfMsgSync, "%l", GetTeamScore(TEAM_BLUE) > GetTeamScore(TEAM_RED) ? "FB_WINNER_BLUE" : "FB_WINNER_RED");
 }
 
 public RestartGame() {
