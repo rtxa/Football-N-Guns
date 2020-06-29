@@ -403,7 +403,7 @@ public RoundStart() {
 
 public RoundRestart() {
 	new players[MAX_PLAYERS], numPlayers;
-	get_players_ex(players, numPlayers, GetPlayers_ExcludeDead);
+	get_players_ex(players, numPlayers, GetPlayers_ExcludeHLTV);
 
 	new plr;
 	for (new i; i < numPlayers; i++) {
