@@ -1,0 +1,24 @@
+-- fb_ukfootie2 by rtxA --
+
+Map created specifically to use with my new mini-mod Football N' Guns. Check it out in https://github.com/rtxa/football-n-guns
+
+# Game mode description:
+- To score enter the ball to the enemy's goal.
+- There are four classes: Scout, Medic, Soldier and Goalkeeper. Each one has its advantages and disadvantages. 
+- Goalies have invulnerability and quad damage but can not leave the goal area.
+
+# Notes:
+- Map source has been included so you can create your own maps for this game mode.
+
+# Credits:
+- Mr.Bee - Creator of map ukfootie.
+- Hiroshi - I taked inspiration from his own map version to make the stadium with a more closed-style.
+- Textures used are from soccerjam map, sqtf.wad, tfc.wad and tfc2.wad.
+
+# Additional information:
+- Level editor: J.A.C.K. 1.1.1064.
+- Compiler: VHLT v34 modified by UnkleMike's.
+- Compiled with the next parameters:
+  - CSG: -wadinclude soccer.wad
+  - VIS: -full
+  - RAD: -extra -gamma 0.75
