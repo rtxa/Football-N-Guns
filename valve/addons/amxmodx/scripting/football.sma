@@ -716,7 +716,9 @@ public OnTriggerMultipleTouch(touched, toucher) {
 			PlaySound(0, SND_GOAL);
 
 			client_print(0, print_center, "%l^n^n%l", goalFromTeam == TEAM_BLUE ? "FB_GOALBLUE" : "FB_GOALRED", "FB_SCORER", toucher);
-			
+			client_print(0, print_console, "%l - %l", goalFromTeam == TEAM_BLUE ? "FB_GOALBLUE" : "FB_GOALRED", "FB_SCORER", toucher);
+			log_amx("%L - %L", LANG_SERVER, goalFromTeam == TEAM_BLUE ? "FB_GOALBLUE" : "FB_GOALRED", LANG_SERVER, "FB_SCORER", toucher);
+
 			// Fade user screen with color of winner
 			if (goalFromTeam == TEAM_BLUE) {
 				fade_user_screen(0, 1.0, 1.0, ScreenFade_FadeIn, 0, 0, 255, 75);
