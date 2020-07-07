@@ -130,6 +130,7 @@ new g_HudCtfMsgSync;
 new g_SprBeam;
 
 new g_pCvarGoalLimit;
+new g_pCvarMatchRunning;
 
 public plugin_precache() {
 	precache_model(MDL_CIVILIAN);
@@ -201,6 +202,10 @@ public plugin_init() {
 	RoundPreStart();
 }
 
+public plugin_cfg() {
+	g_pCvarMatchRunning = get_cvar_pointer("sv_ag_match_running");
+}
+
 // Game mode name that should be displayed in server browser
 public OnGetGameDescription() {
 	forward_return(FMV_STRING, PLUGIN + " " + VERSION);
@@ -236,6 +241,17 @@ public OnPlayerSpawn_Post(id) {
 	if (__get_user_team(id) != GetPlayerTeam(id)) {
 		SetPlayerTeam(id, __get_user_team(id));
 	}
+
+	// ag mod x stuff
+	if (g_pCvarMatchRunning && get_pcvar_num(g_pCvarMatchRunning)) {
+		// probably player has use agallow or someone send agabort
+		// set a team by default and show class menu
+		if (GetPlayerClass(id) == FB_CLASS_NONE) {
+			SetPlayerClass(id, FB_CLASS_SCOUT);
+			DisplayClassMenu(id);
+		}
+	}
+
 
 	switch (GetPlayerTeam(id)) {
 		case TEAM_BLUE: {
@@ -947,7 +963,8 @@ public HandlerClassMenu(id, menu, item) {
 	SetPlayerClass(id, class);
 
 	if (hl_get_user_spectator(id)) {
-		hl_set_user_spectator(id, false);
+		if (!g_pCvarMatchRunning || !get_pcvar_num(g_pCvarMatchRunning))
+			hl_set_user_spectator(id, false);
 	} else if (is_user_alive(id)) {
 		hl_user_kill(id);
 	}
@@ -1365,7 +1382,6 @@ stock UpdateTeamScore(id = 0) {
 	hl_set_user_teamscore(id, g_TeamNames[TEAM_BLUE - 1], GetTeamScore(TEAM_BLUE));
 	hl_set_user_teamscore(id, g_TeamNames[TEAM_RED - 1], GetTeamScore(TEAM_RED));
 }
-
 
 stock ResetMap() {
 	ClearField();
