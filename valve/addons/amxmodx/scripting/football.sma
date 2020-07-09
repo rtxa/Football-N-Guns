@@ -105,9 +105,6 @@ enum {
 	FB_CLASS_CIVILIAN // goalkeeper
 };
 
-// players lang
-new g_LangPlayers[MAX_PLAYERS + 1][16];
-
 // team names and score
 new g_TeamNames[HL_MAX_TEAMS][HL_MAX_TEAMNAME_LENGTH];
 new g_TeamScore[2];
@@ -305,15 +302,6 @@ public OnPlayerKilled_Post(victim, attacker, shouldGib) {
 }
 
 public client_infochanged(id) {
-	// Keep updated translated team names in scoreboard
-	new lang[16];
-	get_user_info(id, "lang", lang, charsmax(lang));
-
-	if (!equal(lang, g_LangPlayers[id])) {
-		get_user_info(id, "lang", g_LangPlayers[id], charsmax(g_LangPlayers[]));
-		UpdateTeamNames(id);
-	}
-
 	// Keep colormap everytime player changes his setinfo
 	new colorTeam[32];
 	switch (GetPlayerTeam(id)) {
@@ -328,8 +316,6 @@ public client_infochanged(id) {
 
 public TaskPutInServer(taskid) {
 	new id = taskid - TASK_PUTINSERVER;
-
-	get_user_info(id, "lang", g_LangPlayers[id], charsmax(g_LangPlayers[]));
 
 	UpdateTeamNames(id);
 	UpdateTeamScore(id);
@@ -370,8 +356,6 @@ public client_disconnected(id) {
 	if (GetBallOwner() == id) {
 		DropBall();
 	}
-
-	g_LangPlayers[id][0] = '^0';
 }
 
 /* =============================== */
