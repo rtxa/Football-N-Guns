@@ -105,8 +105,7 @@ enum {
 	FB_CLASS_CIVILIAN // goalkeeper
 };
 
-// team names and score
-new g_TeamNames[HL_MAX_TEAMS][HL_MAX_TEAMNAME_LENGTH];
+// team score 
 new g_TeamScore[2];
 
 // gamemode
@@ -158,9 +157,6 @@ public plugin_init() {
 	register_forward(FM_GetGameDescription, "OnGetGameDescription");
 
 	register_dictionary("football.txt");
-
-	// cache models from teamlist for set team score without hardcoding team names
-	GetTeamListModels(g_TeamNames, sizeof(g_TeamNames));
 
 	g_HudCtfMsgSync = CreateHudSyncObj();
 	g_TeamScoreHudSync = CreateHudSyncObj();
@@ -1363,8 +1359,8 @@ stock UpdateTeamNames(id = 0) {
 }
 
 stock UpdateTeamScore(id = 0) {
-	hl_set_user_teamscore(id, g_TeamNames[TEAM_BLUE - 1], GetTeamScore(TEAM_BLUE));
-	hl_set_user_teamscore(id, g_TeamNames[TEAM_RED - 1], GetTeamScore(TEAM_RED));
+	hl_set_user_teamscore(id, TEAM_BLUE, GetTeamScore(TEAM_BLUE));
+	hl_set_user_teamscore(id, TEAM_RED, GetTeamScore(TEAM_RED));
 }
 
 stock ResetMap() {
